@@ -1,0 +1,265 @@
+/*___________________________________________________*\
+
+    #Variables pour les couleurs
+\*___________________________________________________*/
+
+:root {
+
+  --color-first: #0F172A;
+  --color-second: #F0F0F0;
+  --color-white: #FFF;
+  --color-success: #2ECC71;
+  --color-error: #E74C3C;
+  --color-cyan: #0afc1e;
+
+  --linear-gradient: linear-gradient(45deg, var(--color-first),
+      var(--color-success));
+  /*
+        * Typographique
+    */
+
+  /* Font family*/
+
+
+  /* Font size*/
+  --fontSize-1: 4rem;
+  --fontSize-2: 3.2rem;
+  --fontSize-3: 2.4rem;
+  --fontSize-4: 2rem;
+  --fontSize-5: 1.8rem;
+  --fontSize-6: 1.6rem;
+  --fontSize-7: 1.4rem;
+  --fontSize-8: 1rem;
+  --fontSize-9: 0.8rem;
+
+  /* Font weight*/
+  --weight-Light: 300;
+  --weight-Regular: 500;
+  --weight-SemiBold: 600;
+  --weight-Bold: 700;
+  --weight-ExtratBold: 900;
+
+}
+
+
+
+/* Font family*/
+
+@font-face {
+  font-family: "title";
+  src: url(/assets/fonts/FrederickatheGreat-Regular.ttf);
+}
+
+/*___________________________________________________*\
+
+    #reset
+\*___________________________________________________*/
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  transition: .2s linear;
+  outline: none;
+
+
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Poppins';
+  background-color: rgb(255, 255, 255);
+
+}
+
+.main {
+  padding: 40px;
+}
+
+header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: var(--color-first);
+  color: var(--color-cyan);
+  height: 80px;
+}
+
+ul {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+nav ul li {
+  list-style: none;
+  margin: 0 10px;
+}
+
+nav ul li a {
+
+  color: var(--color-cyan);
+  text-decoration: none;
+  border: 2px solid;
+  border-left: 0px;
+  border-top: 0px;
+  border-bottom: 0px;
+  border-color: var(--color-cyan);
+  padding-right: 5px;
+
+}
+
+a#gcu {
+  color: white;
+  text-decoration: none;
+}
+
+nav ul li a:hover {
+  color: var(--color-cyan) !important;
+  /* background-color: green; */
+  font-size: 17px;
+  letter-spacing: 2px;
+
+}
+
+nav ul li a:active {
+  color: #F0F0F0;
+  background-color: rgb(2, 121, 175);
+}
+
+.content {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+
+.remember label input {
+  margin-bottom: 25px;
+  font-size: 23px;
+}
+
+a.passforget {
+  color: var(--color-cyan);
+  text-decoration: none;
+  font-weight: 800;
+
+}
+
+.container {
+  background-color: var(--color-white);
+  border-radius: 5px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  width: 500px;
+  max-width: 100%;
+  margin-top: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid var(--color-second);
+  background-color: var(--color-first);
+  color: var(--color-cyan);
+
+  padding: 20px 40px;
+}
+
+.logo h2 a,
+header h2 a {
+  text-align: center;
+  /* font-size: 16px; */
+  color: white !important;
+  text-decoration: none;
+}
+
+.form {
+  padding: 20px 30px;
+}
+
+.form-control {
+  padding-bottom: 20px;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.form-control label {
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+.form-control input {
+  border: 2px solid var(--color-second);
+  border-radius: 4px;
+  display: block;
+  font-family: inherit;
+  font-size: 14px;
+  height: 40px;
+  width: 100%;
+  padding-left: 10px;
+}
+
+
+
+.form button {
+  background-color: var(--color-first);
+  border: 2px solid;
+  color: var(--color-white);
+  display: block;
+  font-family: inherit;
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
+  width: 100%;
+  cursor: pointer;
+}
+
+.form button:hover {
+  background-color: var(--color-cyan);
+  ;
+  color: var(--color-first);
+  border: none;
+
+}
+
+
+.alert {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+.alert-success {
+  background-color: #dff0d8;
+  color: #3c763d;
+}
+
+.alert-error {
+  background-color: #ff6c6c;
+  color: #ffffff;
+}
+
+.alert-warning {
+  background-color: #fcf8e3;
+  color: #8a6d3b;
+}
+
+.success {
+  background-color: #dff0d8;
+  color: #3c763d;
+}
+
+.error,
+.danger {
+  background-color: #ff6c6c;
+  color: #ffffff;
+}
+
+.warning {
+  background-color: #fcf8e3;
+  color: #8a6d3b;
+}
