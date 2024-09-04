@@ -1,6 +1,10 @@
 <?php
 session_start();
-require_once "database/database.php";
+require_once "libraries/database.php";
+require_once'libraries/utils.php';
+
+$pdo = getPdo();
+
 /**
  * DANS CE FICHIER, ON CHERCHE À SUPPRIMER L'ARTICLE DONT L'ID EST PASSE EN GET
  * 
@@ -33,8 +37,7 @@ if (!$article) {
 $query = $pdo->prepare('DELETE FROM articles WHERE id = :id');
 $query->execute(['id' => $id]);
 
-/**
- * 5. Redirection vers la page d'accueil
- */
-header("Location: admin_dashboard.php");
-exit();
+
+// header("Location: admin_dashboard.php");
+// exit();
+redirect('admin_dashboard.php');

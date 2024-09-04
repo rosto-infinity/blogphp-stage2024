@@ -1,7 +1,9 @@
 <?php
 session_start();
- require_once "database/database.php"; // Fichier de configuration pour la connexion à la base de données
+require_once "libraries/database.php";
+require_once "libraries/utils.php";
 
+$pdo = getPdo();
 
 if (isset($_POST['login'])) {
     $errors = "";
@@ -35,11 +37,11 @@ if (isset($_POST['login'])) {
             // Redirection en fonction du rôle
             switch ($user['role']) {
                 case 'admin':
-                    header("Location: admin_dashboard.php");
+                    redirect("admin_dashboard.php");
                     break;
 
                 default:
-                    header("Location: user_dashboard.php");
+                    redirect("user_dashboard.php");
                     break;
             }
         } else {
@@ -57,14 +59,4 @@ if (isset($_POST['login'])) {
 //Titre de la page 
 $pageTitle = 'login';
 
-// debut du tampon de la page de sortie
-ob_start();
-
-//Inclusion du template de la page d'accueil
-require "templates/articles/login_html.php";
-
-//Récuperation du contenu du tampon de la page de sortie
-$pageContent = ob_get_clean();
-
-//Inclusion du template de la page de sortie
-require "templates/layout_html.php";
+render('articles/login');

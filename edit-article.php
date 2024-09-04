@@ -1,6 +1,10 @@
 <?php
 session_start();
-require_once "database/database.php";
+require_once "libraries/database.php";
+require_once "libraries/utils.php";
+
+$pdo = getPdo();
+
 $error="";
 
 echo $error;
@@ -52,21 +56,18 @@ if (isset($_POST['update'])) {
    
    
    // Mise à jour de l'article dans la base de données
-    $data = compact('title', 'slug', 'introduction', 'content', 'articleId');
+
     $query = $pdo->prepare('UPDATE articles SET title = :title, slug = :slug, introduction = :introduction, content = :content WHERE id = :articleId');
-    $query->execute($data);
+    $query->execute(compact('title', 'slug', 'introduction', 'content', 'articleId'));
 
     // Redirection vers la page d'adim
-    header("Location: admin_dashboard");
-    exit();
+    redirect("admin_dashboard");
   }
 }
 
 
 $pageTitle = "Éditer un article";
-ob_start();
-require 'templates/articles/edit-article_html.php';
 
-$pageContent = ob_get_clean();
 
-require 'templates/layout_html.php';
+render('articles/edit-article',
+compact('title','slug','introduction','content','articleId'));

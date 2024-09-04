@@ -1,6 +1,9 @@
 <?php 
 session_start();
-require_once "database/database.php";
+require_once "libraries/database.php";
+require_once "libraries/utils.php";
+
+$pdo = getPdo();
 
 /**
  * 1. Récupération du param "id" et vérification de celui-ci
@@ -46,13 +49,6 @@ $query->execute(compact('article_id'));
 // On fouille le résultat pour en extraire les données réelles des commentaires
 $commentaires= $query->fetchAll();
 
-
-
-
-
-
-
-
 /**
  * . On affiche 
  */
@@ -61,14 +57,5 @@ $commentaires= $query->fetchAll();
 //Titre de la page 
 $pageTitle ='Article du  blog'; 
 
-// debut du tampon de la page de sortie
-ob_start();
-
-//Inclusion du template de la page d'accueil
-require"templates/articles/show_html.php";
-
-//Récuperation du contenu du tampon de la page de sortie
-$pageContent = ob_get_clean();
-
-//Inclusion du template de la page de sortie
-require"templates/layout_html.php";
+// render('articles/index', compact('articles'));
+render('articles/show',compact('article','commentaires','article_id'));

@@ -1,6 +1,8 @@
 <?php
 session_start();
-require_once "database/database.php";
+require_once "libraries/database.php";
+
+$pdo = getPdo();
 /**
  * CE FICHIER DOIT ENREGISTRER UN NOUVEAU COMMENTAIRE EST REDIRIGER SUR L'ARTICLE !
  * 
@@ -45,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   // On fait quand même gaffe à ce que le gars n'essaye pas des balises cheloues dans son commentaire
   $content = htmlspecialchars($content);
   
-  var_dump($content);
+  // var_dump($content);
   // die();
   
   // Vérification de l'existence de l'article

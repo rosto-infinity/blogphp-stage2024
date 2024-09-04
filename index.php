@@ -1,30 +1,22 @@
 <?php 
-require_once "database/database.php";
+require_once "libraries/database.php";
+require_once "libraries/utils.php";
 
+$pdo = getPdo();
 //Récuperation des articles de la base de données
 $resultats = $pdo->query("SELECT * FROM articles ORDER BY created_at DESC");
 $articles = $resultats->fetchAll();
-
-
-
-
-
 
 /**
  * . On affiche 
  */
 
 //Titre de la page 
-$pageTitle ='Accueil du blog '; 
+$pageTitle ='Accueil du blog ';
 
-// debut du tampon de la page de sortie
-ob_start();
+//require "templates/articles/index_html.php";
+// render('articles/index', [
+//   'pageTitle' => $pageTitle,  // Titre de la page
+//   'articles' => $articles]);
 
-//Inclusion du template de la page d'accueil
-require"templates/articles/index_html.php";
-
-//Récuperation du contenu du tampon de la page de sortie
-$pageContent = ob_get_clean();
-
-//Inclusion du template de la page de sortie
-require"templates/layout_html.php";
+  render('articles/index', compact('articles'));

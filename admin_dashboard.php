@@ -1,13 +1,12 @@
 <?php
 session_start();
-require_once "database/database.php";
+require_once "libraries/database.php";
+require_once "libraries/utils.php";
+$pdo = getPdo();
 
 if ($_SESSION['role'] != 'admin') {
-    header("Location: index.php");
-    exit();
+    redirect("index.php");  
 }
-
-
 
 /**
  * Ajouter un nouvel article
@@ -40,8 +39,6 @@ if (isset($_POST['add-article'])) {
         $query->execute([$title, $slug, $introduction, $content]);
     }
 }
-
-
 
 
 // Configuration
@@ -81,15 +78,4 @@ return $stmt->fetchAll();
 //Titre de la page
 $pageTitle = "Ajouter un article";
 
-
-// debut du tampon de la page de sortie
-ob_start();
-
-//Inclusion du template de la page d'accueil
-require"templates/admin/admin_dashboard_html.php";
-
-//Récuperation du contenu du tampon de la page de sortie
-$pageContent = ob_get_clean();
-
-//Inclusion du template de la page de sortie
-require"templates/layout_html.php";
+render('admin/admin_dashboard', compact('allArticles','startIndex','articlesPerPage','totalPages','page'));
