@@ -1,71 +1,53 @@
 <?php
 require_once "libraries/database.php";
 require_once "libraries/utils.php";
-$pdo = getPdo();
 
+$pdo = getPdo();  // Connexion à la base de données
 
 if (isset($_POST['register'])) {
 
-   $errors = [];
+    $errors = [];
 
-  // Pseudo--------------------------------
-  if (empty($_POST['username'])) {
-    
-    $errors['username'] = "Pseudo non valide";
-    
-  } else {
-   
-    $query = "SELECT * FROM users WHERE username = ?";
-    $req = $pdo->prepare($query);
-    $req->execute([$_POST['username']]);
-    
-    if ($req->fetch()) {
-      $errors['username'] = "Ce pseudo n'est plus disponible"; 
+    // Validation du pseudo
+    if (empty($_POST['username'])) {
+        $errors['username'] = "Pseudo non valide";
+    } else {
+        if (isUsernameTaken($_POST['username'])) {
+            $errors['username'] = "Ce pseudo n'est plus disponible";
+        }
     }
-  }
-  
-  // Email---------------------------------------
-  if (empty($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-    $errors['email'] = "Email non valide";
-  } else {
-    // SELECT * FROM users WHERE email = post
-    $query = "SELECT * FROM users WHERE email = ?";
-    $req = $pdo->prepare($query);
-    $req->execute([$_POST['email']]);
-    if ($req->fetch()) {
-      $errors['email'] = "Cet email est déjà pris";
+
+    // Validation de l'email
+    if (empty($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+        $errors['email'] = "Email non valide";
+    } else {
+        if (isEmailTaken($_POST['email'])) {
+            $errors['email'] = "Cet email est déjà pris";
+        }
     }
-  }
 
-  // Password-----------------------------------------
-  if (empty($_POST['password'])) {
-    $errors['password'] = "Vous devez entrer un mot de passe ";
-  } else if ($_POST['password'] !== $_POST['confirm_password']) {
-    $errors['password'] = "Votre mot de passe ne correspond pas !";
-  }
+    // Validation du mot de passe
+    if (empty($_POST['password'])) {
+        $errors['password'] = "Vous devez entrer un mot de passe ";
+    } else if ($_POST['password'] !== $_POST['confirm_password']) {
+        $errors['password'] = "Votre mot de passe ne correspond pas !";
+    }
 
-  // INSERT INTO------------------------------------------
-  if (empty($errors)) {
-    $query = "INSERT INTO users(username,email,password) VALUES(?,?,?)";
-    $req = $pdo->prepare($query);
-    $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-
-    $req->execute([$_POST['username'], $_POST['email'], $password]);
-    
-    // On redirige vers la page de login
-
-    redirect("login");
-  }
-
-  
+    // Insérer l'utilisateur si aucune erreur
+    if (empty($errors)) {
+        $hashedPassword = password_hash($_POST['password'], PASSWORD_BCRYPT);
+        
+        if (insertUser($pdo, $_POST['username'], $_POST['email'], $hashedPassword)) {
+            // Rediriger vers la page de login après l'inscription réussie
+            redirect("login");
+        } else {
+            $errors['database'] = "Une erreur est survenue lors de l'enregistrement.";
+        }
+    }
 }
 
-
 /**
- * . On affiche 
+ * Affichage de la page
  */
-
-//Titre de la page 
-$pageTitle ='register'; 
-
+$pageTitle = 'register'; 
 render('articles/register');

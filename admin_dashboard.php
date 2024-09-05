@@ -35,8 +35,7 @@ if (isset($_POST['add-article'])) {
 
 
         // Insertion du nouvel article dans la base de données
-        $query = $pdo->prepare('INSERT INTO articles (title, slug, introduction, content, created_at) VALUES (?, ?, ?, ?, NOW())');
-        $query->execute([$title, $slug, $introduction, $content]);
+        $insertArticle=insertArticle($title, $slug, $introduction, $content);
     }
 }
 
@@ -48,7 +47,7 @@ $articlesPerPage = 6; // Nombre d'articles par page
 $page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT) ?: 1;
 
 // Récupération des articles depuis votre source de données
-$allArticles = getAllArticles($pdo); // Fonction pour récupérer tous les articles
+$allArticles = findAllArticles();; // Fonction pour récupérer tous les articles
 $totalArticles = count($allArticles); // Nombre total d'articles
 
 // Calcul du nombre total de pages
@@ -60,17 +59,6 @@ $page = max(1, min($page, $totalPages));
 // Calcul des indices de début des articles à afficher
 $startIndex = ($page - 1) * $articlesPerPage;
 
-
-// Fonction pour récupérer tous les articles
-function getAllArticles($pdo)
-{
-
-
-$query = "SELECT * FROM articles ORDER BY created_at DESC";
-$stmt = $pdo->prepare($query);
-$stmt->execute();
-return $stmt->fetchAll();
-}
 
 /**
  * . On affiche 

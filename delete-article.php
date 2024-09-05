@@ -24,9 +24,8 @@ if ($id === null || $id === false) {
 /**
  * 3. Vérification que l'article existe bel et bien
  */
-$query = $pdo->prepare('SELECT * FROM articles WHERE id = :id');
-$query->execute(['id' => $id]);
-$article = $query->fetch();
+
+ $article =findArticle($id);
 
 if (!$article) {
     die("L'article $id n'existe pas, vous ne pouvez donc pas le supprimer !");
@@ -34,10 +33,8 @@ if (!$article) {
 /**
  * 4. Réelle suppression de l'article
  */
-$query = $pdo->prepare('DELETE FROM articles WHERE id = :id');
-$query->execute(['id' => $id]);
 
-
+deleteArticle($id);
 // header("Location: admin_dashboard.php");
 // exit();
 redirect('admin_dashboard.php');

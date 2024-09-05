@@ -3,38 +3,24 @@ session_start();
 require_once "libraries/database.php";
 require_once "libraries/utils.php";
 
-$pdo = getPdo();
+$pdo = getPdo();  // Connexion à la base de données
 
 if (isset($_POST['login'])) {
     $errors = "";
-    
-//   $errors="ok";
 
-    
+    // Vérification que les champs sont remplis
     if (!empty($_POST['email']) && !empty($_POST['password'])) {
 
-        // Vérification des informations de connexion
-        $query = "SELECT * FROM users
-        WHERE (email = :email OR username =:email)";
-        $query = $pdo->prepare($query);
-        $query->execute([
-            'email' => $_POST['email'], 
-            'password' => $_POST['password']
-        ]);
-        $user = $query->fetch();
-        // echo"<pre>";
-        // print_r($user);
-        // echo"<pre>";
-        // die();
-        
-        // Si les informations de connexion sont correctes, on crée une session et on redirige vers la page d'accueil de l'admin ou l'utilisateur
+        // Rechercher l'utilisateur avec l'email ou le nom d'utilisateur
+        $user = findUserByEmailOrUsername($_POST['email']);
 
+        // Vérifier si l'utilisateur existe et si le mot de passe est correct
         if ($user && password_verify($_POST['password'], $user['password'])) {
+            // Si l'utilisateur est authentifié, on stocke les informations dans la session
             $_SESSION['role'] = $user['role'];
             $_SESSION['auth'] = $user;
-           
 
-            // Redirection en fonction du rôle
+            // Redirection selon le rôle de l'utilisateur
             switch ($user['role']) {
                 case 'admin':
                     redirect("admin_dashboard.php");
@@ -47,16 +33,13 @@ if (isset($_POST['login'])) {
         } else {
             $errors = "Email ou mot de passe incorrect.";
         }
-    }else{
+    } else {
         $errors = "Tous les champs doivent être remplis.";
     }
 }
 
 /**
- * . On affiche 
+ * Affichage de la page
  */
-
-//Titre de la page 
-$pageTitle = 'login';
-
+$pageTitle = 'login'; 
 render('articles/login');
